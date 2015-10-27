@@ -24,7 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.test.TestConfig;
 import com.test.dao.MongoUserDao;
-import com.test.vo.MongoUser;
+import com.test.model.MongoUser;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = TestConfig.class)

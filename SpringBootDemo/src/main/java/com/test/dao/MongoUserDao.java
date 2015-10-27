@@ -2,7 +2,8 @@ package com.test.dao;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.test.vo.MongoUser;
+import com.test.model.MongoUser;
+
 import java.lang.String;
 import java.util.List;
 

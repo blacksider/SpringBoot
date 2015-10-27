@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
+import com.test.model.Group;
+import com.test.model.MongoUser;
+import com.test.model.User;
 import com.test.service.UserService;
-import com.test.vo.Group;
-import com.test.vo.MongoUser;
-import com.test.vo.User;
 
 @RestController
 @RequestMapping("/user")
@@ -167,7 +167,6 @@ public class UserController {
 		String age = request.getParameter("age");
 		String pass = request.getParameter("password");
 		pass = encoder.encode(pass);
-
 		User user = new User(name, new Integer(age));
 
 		user.setPassword(pass);

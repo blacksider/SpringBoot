@@ -7,10 +7,36 @@ spring:
         password: pass
     jpa:
         show-sql: true
-        hibernate.ddl-auto: create-drop
+#        hibernate.ddl-auto: create-drop
         hibernate.naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
         dialect: org.hibernate.dialect.MySQL5Dialect
         database: MYSQL
+    data:
+        mongodb:
+            uri: mongodb://localhost/testmongo
+#application:
+#    ldap:
+#       url: LDAP://192.168.28.123:389
+#       userName: syni@dlp.com
+#       password: q1w2E#R$
+#application:
+#    ldap:
+#       url: LDAP://192.168.28.183:389
+#       userName: test1@advdbg.org
+#       password: q1w2E#R$
+---
+spring:
+    profiles: DevTest
+    datasource:
+        platform: hsqldb
+        driver-class-name: org.hsqldb.jdbcDriver
+        url: jdbc:hsqldb:mem:testdb
+        initialize: true
+    jpa:
+        hibernate.ddl-auto: create-drop
+        hibernate.naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+        show-sql: true
+        database: HSQL
     data:
         mongodb:
             uri: mongodb://localhost/syni

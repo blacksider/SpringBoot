@@ -13,8 +13,8 @@ import rx.schedulers.Schedulers;
 
 import com.test.dao.MongoUserDao;
 import com.test.dao.UserDao;
-import com.test.vo.MongoUser;
-import com.test.vo.User;
+import com.test.model.MongoUser;
+import com.test.model.User;
 
 @Service
 public class UserService {
@@ -137,6 +137,5 @@ public class UserService {
 				});
 
 		return ob.subscribeOn(Schedulers.io());
-
 	}
 }

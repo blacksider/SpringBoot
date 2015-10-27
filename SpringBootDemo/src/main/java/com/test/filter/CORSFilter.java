@@ -37,9 +37,7 @@ public class CORSFilter implements Filter {
 				"Authorization, x-requested-with, Content-Type");
 		if (!"OPTIONS".equals(request.getMethod())) {
 			chain.doFilter(req, resp);
-		} else {
 		}
-
 	}
 
 	@Override

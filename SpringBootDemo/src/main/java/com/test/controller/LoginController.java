@@ -25,7 +25,7 @@ public class LoginController {
 
 	@Autowired
 	private UserService userService;
-
+	
 	// 验证用户信息
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public DeferredResult<?> loginUser(HttpServletRequest request,

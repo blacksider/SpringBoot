@@ -13,7 +13,7 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 @Configuration
 @EnableWebMvcSecurity
 public class MySecurityConfigurer extends WebSecurityConfigurerAdapter {
-	@Resource(name = "databaseUserAuthProvicer")
+	@Resource(name = "databaseUserAuthProvider")
 	public AuthenticationProvider authenticationProvider;
 
 	// @Override
@@ -34,11 +34,12 @@ public class MySecurityConfigurer extends WebSecurityConfigurerAdapter {
 
 		// 设置拦截规则
 		http.authorizeRequests().antMatchers("/login").permitAll()// 可以直接访问/login
-				.antMatchers("/user/saveGroup").permitAll()
+				.antMatchers("/user/*").permitAll()
+				.antMatchers("/ldap/**").permitAll()
 				.anyRequest().authenticated();// 其他的请求都要验证过
 
 		// 开启默认登录页面 关闭
-		http.formLogin().disable();
+		 http.formLogin().disable();
 
 		// session管理
 		http.sessionManagement().sessionFixation().changeSessionId()

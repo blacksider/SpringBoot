@@ -18,7 +18,7 @@ import org.springframework.util.StringUtils;
 import com.test.dao.UserDao;
 
 //定义AuthenticationProvider实现数据库验证
-@Component("databaseUserAuthProvicer")
+@Component("databaseUserAuthProvider")
 public class DatabaseUserAuthProvider implements AuthenticationProvider {
 	@Autowired
 	private UserDao userDao;
