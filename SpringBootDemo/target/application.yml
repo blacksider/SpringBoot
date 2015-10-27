@@ -1,0 +1,16 @@
+spring:
+    datasource:
+        platform: mysql
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/springtest?useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password: pass
+    jpa:
+        show-sql: true
+        hibernate.ddl-auto: create-drop
+        hibernate.naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+        dialect: org.hibernate.dialect.MySQL5Dialect
+        database: MYSQL
+    data:
+        mongodb:
+            uri: mongodb://localhost/syni
