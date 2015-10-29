@@ -3,14 +3,18 @@ package com.test.ldap.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import javax.naming.directory.SearchControls;
 
 import org.dom4j.IllegalAddException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ldap.core.DirContextOperations;
+import org.springframework.ldap.core.support.AbstractContextMapper;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -418,6 +422,73 @@ public class LdapServiceImpl implements LdapService {
 			}
 			return dn1Count - dn2Count;
 		}
+	}
+
+	// get person in current group by AttributesMapper
+	public Observable<List<Person>> getGroupPersonWithAttributesMapper(
+			long groupID) {
+		Observable<List<Person>> ob = Observable.create(observer -> {
+			try {
+				LdapGroup group = groupRepository.findOne(groupID);
+				if (group == null) {
+					throw new IllegalArgumentException(
+							"No such group with id: " + groupID);
+				}
+				LdapGroup server = null;
+				if (group.getGroupType() == LdapGroupType.GROUP) {
+					server = groupRepository.findByDn(group.getServerDN()).get(
+							0);
+				} else if (group.getGroupType() == LdapGroupType.SERVER) {
+					server = group;
+				} else {
+					throw new IllegalArgumentException("No such group type!");
+				}
+				LdapGroupServerInfo serverInfo = server.getServerInfo();
+
+				String base = group.getDn().toString();
+
+				String filter = "(&(objectclass=organizationalPerson)"
+						+ "(objectclass=person))";
+
+				List<Person> persons = ldapRepository
+						.findPersonByGroupDNAndAttrMapper(serverInfo, base,
+								filter, new PersonAttributesMapper());
+
+				observer.onNext(persons);
+				observer.onCompleted();
+			} catch (Exception e) {
+				e.printStackTrace();
+				observer.onError(e);
+			}
+		});
+		return ob.subscribeOn(Schedulers.io());
+	}
+
+	private class PersonAttributesMapper extends AbstractContextMapper<Person> {
+
+		@Override
+		protected Person doMapFromContext(DirContextOperations ctx) {
+			Person person = new Person();
+
+			person.setDn(ctx.getDn());
+			person.setFullName(ctx.getStringAttribute("cn"));
+			person.setLastName(ctx.getStringAttribute("sn"));
+			person.setMail(ctx.getStringAttribute("mail"));
+			person.setManagerObject(ctx.getStringAttribute("managedObjects"));
+			person.setManager(ctx.getStringAttribute("manager"));
+			person.setDescription(ctx.getStringAttribute("description"));
+
+			Object[] directReports = ctx.getObjectAttributes("directReports");
+			if (directReports != null && directReports.length > 0) {
+				Set<String> strings = new HashSet<String>();
+				for (Object o : directReports) {
+					strings.add(o.toString());
+				}
+				person.setDirectReports(strings);
+			}
+			return person;
+		}
+
 	}
 
 }

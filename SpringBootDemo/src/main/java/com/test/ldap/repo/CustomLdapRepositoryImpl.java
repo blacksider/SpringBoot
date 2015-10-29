@@ -7,6 +7,7 @@ import javax.naming.directory.DirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.LdapName;
 
+import org.springframework.ldap.core.ContextMapper;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.LdapContextSource;
 import org.springframework.ldap.filter.AndFilter;
@@ -136,5 +137,13 @@ public class CustomLdapRepositoryImpl implements CustomLdapRepository {
 		} finally {
 			LdapUtils.closeContext(ctx);
 		}
+	}
+
+	@Override
+	public List<Person> findPersonByGroupDNAndAttrMapper(
+			LdapGroupServerInfo serverInfo, String base, String filter,
+			ContextMapper<Person> mapper) {
+		openLdapConnection(serverInfo);
+		return ldapTemplate.search(base, filter, mapper);
 	}
 }

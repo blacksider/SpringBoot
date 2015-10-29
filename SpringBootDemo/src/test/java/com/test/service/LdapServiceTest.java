@@ -166,6 +166,23 @@ public class LdapServiceTest {
 		assertTrue(rs);
 	}
 
+	@Test
+	public void testGetGroupPersonWithAttrMapper() {
+		List<LdapGroup> all = groupRepository.findAll();
+		assertNotNull(all);
+		assertTrue(!all.isEmpty());
+		LdapGroup group = all.get(0);
+		assertNotNull(group);
+		List<Person> persons = ldapService
+				.getGroupPersonWithAttributesMapper(group.getId()).toBlocking()
+				.first();
+		assertNotNull(persons);
+		assertTrue(persons.size() > 0);
+		for (Person person : persons) {
+			System.err.println(person);
+		}
+	}
+
 	public void loadTree(LdapGroup groupTree) {
 		System.err.println(groupTree);
 		List<LdapGroup> subGroups = groupTree.getSubGroups();

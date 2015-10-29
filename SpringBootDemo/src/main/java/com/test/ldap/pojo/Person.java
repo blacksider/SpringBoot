@@ -1,5 +1,7 @@
 package com.test.ldap.pojo;
 
+import java.util.Set;
+
 import javax.naming.Name;
 
 import org.springframework.ldap.odm.annotations.Attribute;
@@ -26,6 +28,12 @@ public class Person {
 
 	@Attribute(name = "managedObjects")
 	private String managerObject;
+
+	@Attribute(name = "manager")
+	private String manager;
+
+	@Attribute(name = "directReports")
+	private Set<String> directReports;
 
 	@Transient
 	private String group;
@@ -89,12 +97,28 @@ public class Person {
 		this.managerObject = managerObject;
 	}
 
+	public String getManager() {
+		return manager;
+	}
+
+	public void setManager(String manager) {
+		this.manager = manager;
+	}
+
+	public Set<String> getDirectReports() {
+		return directReports;
+	}
+
+	public void setDirectReports(Set<String> directReports) {
+		this.directReports = directReports;
+	}
+
 	@Override
 	public String toString() {
 		return "Person [dn=" + dn + ", fullName=" + fullName + ", lastName="
 				+ lastName + ", mail=" + mail + ", managerObject="
-				+ managerObject + ", group=" + group + ", description="
-				+ description + "]";
+				+ managerObject + ", manager=" + manager + ", directReports="
+				+ directReports + ", description=" + description + "]";
 	}
 
 }
